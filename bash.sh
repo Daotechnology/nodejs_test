@@ -1,33 +1,15 @@
 #!/bin/bash
 
-# Set project directory
-PROJECT_DIR="my-node-app"
+# Update system packages
+echo "Updating system packages..."
+sudo apt-get update -y && sudo apt-get upgrade -y
 
-# Create project directory
-mkdir -p $PROJECT_DIR
-cd $PROJECT_DIR
+# Log the update status
+echo "System update completed at $(date)" | tee -a /var/log/system_update.log
 
-# Initialize package.json (Silent mode)
-npm init -y
+# Check disk space usage
+echo "Checking disk space..."
+df -h | tee -a /var/log/system_update.log
 
-# Install Express
-npm install express
-
-# Create a basic Express server file
-cat <<EOL > server.js
-const express = require('express');
-const app = express();
-
-const PORT = process.env.PORT || 3000;
-
-app.get('/', (req, res) => {
-    res.send('Hello, World!');
-});
-
-app.listen(PORT, () => {
-    console.log(\`Server running on http://localhost:\${PORT}\`);
-});
-EOL
-
-echo "Node.js Express setup completed!"
-echo "Run your server with: node server.js"
+echo "Script execution completed successfully."
+exit 0
